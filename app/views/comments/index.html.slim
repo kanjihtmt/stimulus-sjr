@@ -1,0 +1,17 @@
+.p-4
+  h1 Comments
+
+  .comment-list data-controller="comment-list"
+    ul.comment-errors data-target="comment-list.commentErrors"
+    ul.comments-list data-target="comment-list.commentList"
+      - @comments.each do |comment|
+        == render comment
+
+    = form_with model: Comment.new, html: { data: { type: "html",
+        action: "ajax:success->comment-list#onPostSuccess ajax:error->comment-list#onPostError" } } do |f|
+      .form-group
+        = f.text_area :message, hide_label: true, placeholder: "New comment...",
+          data: { target: "comment-list.text" },class: 'form-control'
+      .form-group
+        = f.submit "Post Comment", class: 'btn btn-secondary'
+
